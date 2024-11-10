@@ -1,0 +1,73 @@
+\documentclass{article}
+
+
+
+\usepackage[backend=bibtex,
+style=ieee,
+%bibencoding=ascii,
+sorting=ydnt,
+refsection=section,
+defernumbers=true,
+url=false,
+maxnames=99, 
+minnames=3,
+]{biblatex}
+
+
+
+
+
+\newcounter{total}
+\newcounter{totarticles}
+\newcounter{totconferences}
+\AtDataInput{%
+    \ifentrytype{article}%
+        {\stepcounter{totarticles}}%
+        {}%
+    \ifentrytype{inproceedings}%
+        {\stepcounter{totconferences}}%
+        {}%
+    }%
+
+\newcommand{\printbibsection}[2]{%
+    \printbibliography[type={#1}, title={#2}, resetnumbers=true]%
+    }%
+
+%add prefix
+\DeclareFieldFormat{labelnumber}{%
+  \ifentrytype{article}{J-#1}{%
+  \ifentrytype{inproceedings}{C-#1}{%
+  \ifentrytype{book}{B-#1}{#1}}}} % Add additional types as needed
+
+
+
+%load Bib file
+\addbibresource{pubblicazioni}
+
+ 
+ 
+\begin{document}
+ 
+\title{How to create a bibliography divided by type}
+\author{Tommaso Lisini Baldi}
+\date{November 2024}
+
+
+\maketitle
+
+%cite all the entries
+\nocite{*}
+
+This document has \thetotconferences{} conferences and \thetotarticles{} articles. % I've added this line only to show the counters
+    
+
+%\setcounter{totarticles}{\thetotarticles}
+
+\printbibsection{article}{Article in peer-reviewed journal} % Print all articles from the bibliography
+
+% \setcounter{total}{\thetotconferences}
+\printbibsection{inproceedings}{Conferences} % Print all books from the bibliography
+
+
+
+\end{document}
